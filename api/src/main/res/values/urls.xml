@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="url_all_films">
+        https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&amp;api_key=</string>
+    <string name="url_specific_film">https://api.themoviedb.org/3/movie/%1$s?api_key=</string>
+</resources>

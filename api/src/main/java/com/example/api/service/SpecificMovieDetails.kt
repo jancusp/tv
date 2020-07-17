@@ -4,8 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MovieDetails (
+data class SpecificMovieDetails (
     val id: Int,
-    val title: String,
+    @Json(name = "original_title" ) val title: String,
+    val runtime: Int,
     @Json(name = "poster_path") val posterPath: String
 )

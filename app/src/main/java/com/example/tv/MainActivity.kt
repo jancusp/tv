@@ -6,18 +6,34 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.api.service.FilmService
+import com.example.tv.di.provider.ApplicationComponentProvider
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var filmService: FilmService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        (application as ApplicationComponentProvider)
+            .getApplicationComponent()
+            .inject(this)
+
+        //getFilms()
+        getFilmById()
+
+    }
+
+    private fun getFilms() {
+        println(filmService.fetchFilms())
+    }
+
+    private fun getFilmById() {
+        filmService.fetchFilmById(547016)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
