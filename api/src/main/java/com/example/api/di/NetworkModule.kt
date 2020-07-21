@@ -8,19 +8,26 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class NetworkModule(
-    val application: Application
-) {
+class NetworkModule() {
 
     @Provides
     @Singleton
-    fun getFilms(
-        stringsProvider: StringsProvider
-    ): FilmService =
-        FilmService(stringsProvider)
-
-    @Provides
-    @Singleton
-    fun stringsProvider() = StringsProvider(application)
+    fun getFilms(): FilmService = FilmService()
 
 }
+
+//@Module
+//class NetworkModule(val application: Application) {
+//
+//    @Provides
+//    @Singleton
+//    fun getFilms(
+//        stringsProvider: StringsProvider
+//    ): FilmService =
+//        FilmService(stringsProvider)
+//
+//    @Provides
+//    @Singleton
+//    fun stringsProvider() = StringsProvider(application)
+//
+//}
