@@ -1,9 +1,7 @@
 package com.example.api.service
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.example.api.R
-import com.example.api.resource.StringsProvider
+import com.example.api.data.MovieDetails
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -16,10 +14,8 @@ import org.json.JSONObject
 import java.io.IOException
 import com.example.api.data.MovieHolder
 import com.example.api.data.MovieSearchResult
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.example.api.data.SpecificMovieDetails
 
-//@Singleton
 class FilmService {
 
     var client = OkHttpClient()
@@ -33,7 +29,7 @@ class FilmService {
         moviesResult.postValue(MovieSearchResult())
         movies = MovieSearchResult()
         //request.GET(stringsProvider.getString(R.string.url_all_films),
-        request.GET("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&amp;api_key=",
+        request.GET("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=",
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body()?.string()
@@ -82,7 +78,8 @@ class FilmService {
 
     fun parseFilm(film: String): SpecificMovieDetails? {
         val moshi: Moshi = Moshi.Builder().build()
-        val adapter: JsonAdapter<SpecificMovieDetails> = moshi.adapter(SpecificMovieDetails::class.java)
+        val adapter: JsonAdapter<SpecificMovieDetails> = moshi.adapter(
+            SpecificMovieDetails::class.java)
         val movie = adapter.fromJson(film)
         return movie
     }

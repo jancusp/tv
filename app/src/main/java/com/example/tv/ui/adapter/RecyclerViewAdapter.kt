@@ -4,10 +4,11 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.api.data.MovieDetails
+import com.example.api.data.MovieHolder
 import com.example.api.utils.inflate
 import com.example.tv.R
-import com.example.api.data.MovieHolder
-import com.example.api.service.MovieDetails
 import kotlinx.android.synthetic.main.recycler_item.view.*
 
 class RecyclerViewAdapter(private val movies: List<MovieHolder>, private val context: Context?) :
@@ -22,12 +23,18 @@ class RecyclerViewAdapter(private val movies: List<MovieHolder>, private val con
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        holder.bind(movies[position].movie)
+        val currentUrl: String =  "https://image.tmdb.org/t/p/w500" +
+                movies[position].movie.posterPath
+        holder.bind(movies[position].movie, currentUrl)
+
     }
 }
 
 class MoviesViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-    fun bind(movie: MovieDetails) {
+    fun bind(movie: MovieDetails, url: String) {
         view.movie_title.text = movie.title
+        Glide.with(view)
+            .load(url)
+            .into(view.movie_poster)
     }
 }

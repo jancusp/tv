@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_movie_list.view.*
 import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor() : ViewModel() {
-
-
     var _movies = MutableLiveData<MovieSearchResult>(MovieSearchResult())
     var movies: LiveData<MovieSearchResult> = _movies
 
@@ -24,14 +22,4 @@ class MovieListViewModel @Inject constructor() : ViewModel() {
     fun fetchFilms(){
         filmService.fetchFilms(_movies)
     }
-
-//    private fun initMovies(view: View){
-//        val cols = 3
-//        view.movies_recycler.layoutManager = GridLayoutManager(context, cols)
-//        filmService.fetchFilms(_movies)
-//        movies = _movies
-//        view.movies_recycler.adapter = RecyclerViewAdapter(movies.value!!.movies, context)
-//
-//    }
-
 }

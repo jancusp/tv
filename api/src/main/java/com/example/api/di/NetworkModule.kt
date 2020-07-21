@@ -12,7 +12,7 @@ class NetworkModule() {
 
     @Provides
     @Singleton
-    fun getFilms(): FilmService = FilmService()
+    fun provideFilmService(): FilmService = FilmService()
 
 }
 
