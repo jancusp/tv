@@ -16,8 +16,7 @@ import com.example.api.data.MovieHolder
 import com.example.api.data.MovieSearchResult
 import com.example.api.data.SpecificMovieDetails
 
-class FilmService {
-
+class FilmService{
     var client = OkHttpClient()
     var request = OkHttpRequest(client)
 
@@ -28,12 +27,11 @@ class FilmService {
     fun fetchFilms(moviesResult: MutableLiveData<MovieSearchResult>) {
         moviesResult.postValue(MovieSearchResult())
         movies = MovieSearchResult()
-        //request.GET(stringsProvider.getString(R.string.url_all_films),
         request.GET("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=",
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body()?.string()
-                    try{
+                    try {
                         var json = JSONObject(responseData)
                         var filmsJson = json.getJSONArray("results")
                         movieSearchResult = parseFilms(filmsJson.toString())
@@ -41,8 +39,7 @@ class FilmService {
                             movies.movies.add(MovieHolder(movie))
                             moviesResult.postValue(movies)
                         }
-                        println(movies)
-                    } catch (e: JSONException){
+                    } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
@@ -62,9 +59,9 @@ class FilmService {
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body()?.string()
                     val json = JSONObject(responseData)
-                    try{
+                    try {
                         println(parseFilm(json.toString()))
-                    } catch (e: JSONException){
+                    } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
@@ -79,7 +76,8 @@ class FilmService {
     fun parseFilm(film: String): SpecificMovieDetails? {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<SpecificMovieDetails> = moshi.adapter(
-            SpecificMovieDetails::class.java)
+            SpecificMovieDetails::class.java
+        )
         val movie = adapter.fromJson(film)
         return movie
     }

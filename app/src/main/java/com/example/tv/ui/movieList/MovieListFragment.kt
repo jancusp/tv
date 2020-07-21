@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.api.data.MovieSearchResult
-import com.example.api.service.FilmService
 import com.example.tv.R
 import com.example.tv.ui.adapter.RecyclerViewAdapter
 import dagger.android.support.DaggerFragment
@@ -34,9 +33,6 @@ class MovieListFragment : DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, providerFactory).get(MovieListViewModel::class.java)
-//        val factory = MovieListViewModel.Factory()
-//        viewModel = ViewModelProvider(this, factory)
-//            .get(MovieListViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -44,17 +40,11 @@ class MovieListFragment : DaggerFragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         val view = inflater.inflate(R.layout.fragment_movie_list, container, false)
         initMovies(view)
 
         return view
     }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//    }
 
     private fun initMovies(view: View){
         val cols = 3

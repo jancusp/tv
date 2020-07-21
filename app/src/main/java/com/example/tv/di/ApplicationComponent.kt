@@ -4,7 +4,6 @@ import com.example.api.di.NetworkModule
 import com.example.tv.app.CustomApplication
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
