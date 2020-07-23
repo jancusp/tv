@@ -2,6 +2,7 @@ package com.example.tv.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tv.ui.movieInfo.MovieInfoViewModel
 import com.example.tv.ui.movieList.MovieListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -18,6 +19,11 @@ abstract class ViewModelFactoryModule {
     @IntoMap
     @ViewModelKey(MovieListViewModel::class)
     internal abstract fun postListViewModel(viewModel: MovieListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieInfoViewModel::class)
+    internal abstract fun postInfoViewModel(viewModel: MovieInfoViewModel): ViewModel
 }
 
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)

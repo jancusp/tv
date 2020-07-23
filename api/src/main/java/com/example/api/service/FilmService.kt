@@ -1,7 +1,7 @@
 package com.example.api.service
 
 import androidx.lifecycle.MutableLiveData
-import com.example.api.data.MovieDetails
+import com.example.api.data.*
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -12,17 +12,20 @@ import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import com.example.api.data.MovieHolder
-import com.example.api.data.MovieSearchResult
-import com.example.api.data.SpecificMovieDetails
+import java.util.concurrent.TimeUnit
 
-class FilmService{
-    var client = OkHttpClient()
+class FilmService {
+    var client = OkHttpClient().newBuilder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .build()
     var request = OkHttpRequest(client)
 
     private lateinit var movies: MovieSearchResult
-
     private lateinit var movieSearchResult: List<MovieDetails>
+
+    private lateinit var movie: SpecificMovieResult
+    private lateinit var movieResult: SpecificMovieDetails
 
     fun fetchFilms(moviesResult: MutableLiveData<MovieSearchResult>) {
         moviesResult.postValue(MovieSearchResult())
@@ -45,12 +48,12 @@ class FilmService{
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
-                    TODO("Make Allert Dialog Peter")
+                    TODO()
                 }
             })
     }
 
-    fun fetchFilmById(id: Int) {
+    fun fetchFilmById(id: Int, specMovie: MutableLiveData<SpecificMovieResult>) {
         //request.GET(String.format(stringsProvider.getString(R.string.url_specific_film), id),
         request.GET(
             "https://api.themoviedb.org/3/movie/$id?api_key=",
@@ -58,28 +61,30 @@ class FilmService{
 
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body()?.string()
-                    val json = JSONObject(responseData)
                     try {
-                        println(parseFilm(json.toString()))
+                        var json = JSONObject(responseData)
+                        movieResult = parseFilm(json.toString())
+                        movie = SpecificMovieResult(SpecificMovieHolder(movieResult))
+                        specMovie.postValue(movie)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
-                    TODO("Make Allert Dialog Peter")
+                    TODO()
                 }
 
             })
     }
 
-    fun parseFilm(film: String): SpecificMovieDetails? {
+    fun parseFilm(film: String): SpecificMovieDetails {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<SpecificMovieDetails> = moshi.adapter(
             SpecificMovieDetails::class.java
         )
         val movie = adapter.fromJson(film)
-        return movie
+        return movie!!
     }
 
     fun parseFilms(films: String): List<MovieDetails> {
